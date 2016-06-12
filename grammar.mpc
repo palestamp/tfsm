@@ -1,0 +1,13 @@
+
+ident       : /[a-zA-Z_][a-zA-Z0-9_]*/ ;
+typeident   : ("init" | "fini" | "node") ;
+strng       : /\"(\\\\.|[^\"])*\"/ ;
+declaration : "DECLARE" <typeident> "::" <ident> ;
+source      : '(' <strng> ',' <strng> ')' ;
+statemap    : <ident> "=>" <ident> ';' ;
+statements  : <statemap> (<statemap>)* ;
+clause      : <declaration> ';' 
+            | <declaration> <source> ':' <statements> "END" ;
+
+fsm         : /^/ <clause> (<clause>)* /$/ ;
+

@@ -1,0 +1,22 @@
+
+
+DECLARE init::PHOTO_CLAUSE;
+DECLARE fini::ACCEPT;
+DECLARE fini::REJECT;
+DECLARE fini::MODERATE;
+
+DECLARE node::PHOTO_CLAUSE("<inject>", "test_photo"):
+    YES => TEXT_CLAUSE;
+    NO  => ACCEPT;
+END
+
+DECLARE node::TEXT_CLAUSE("<inject>", "test_text"):
+    UNDER_15 => REJECT;
+    UNDER_30 => IS_COMPANY_CLAUSE;
+    UNDER_80 => ACCEPT;
+END
+
+DECLARE node::IS_COMPANY_CLAUSE("<inject>", "test_company"):
+    YES => ACCEPT;
+    NO  => MODERATE;
+END

@@ -9,25 +9,24 @@
 #define TFSM_GRAMMAR_SOURCE ("./grammar.mpc")
 #endif
 
-
-typedef struct tfsm_context_t {} tfsm_context_t;
-typedef struct tfsm_trans_retval_t {} tfsm_trans_retval_t;
+// use context for further extension
+typedef struct tfsm_context_t {
+    void *data;
+} tfsm_context_t;
 
 typedef enum {
     TFSM_STATE_T_FINI = 1 << 0,
     TFSM_STATE_T_INIT = 1 << 1,
     TFSM_STATE_T_NODE = 1 << 2
-} tfsm_state_type_t; 
-
+} tfsm_state_type_t;
 
 typedef struct tfsm_transition_t {
     TAILQ_ENTRY(tfsm_transition_t) trs;
-    TAILQ_ENTRY(tfsm_transition_t) tbl_trs;
+    TAILQ_ENTRY(tfsm_transition_t) tbl_trs; /* head  */
     char *from_state;
     char *ret_val;
     char *to_state;
 } tfsm_transition_t;
-
 
 typedef struct tfsm_fsm_t {
     TAILQ_HEAD(,tfsm_state_t) states;
@@ -50,9 +49,11 @@ typedef struct tfsm_state_t {
 } tfsm_state_t;
 
 typedef char *(*tfsm_state_fn)(tfsm_fsm_t *tfsm, tfsm_context_t *ctx);
-/*
- * Finite state machine interface
- */
+
+/* ******************************************************************************* *
+ *                                  fsm interface                                  *
+ * ******************************************************************************* */
+
 tfsm_fsm_t *tfsm_fsm_new(void);
 tfsm_fsm_t *tfsm_fsm_create_from_file(const char *filename);
 void tfsm_fsm_cleanup(tfsm_fsm_t *tfsm);
@@ -62,9 +63,10 @@ void tfsm_fsm_inject_fn(tfsm_fsm_t *tfsm, tfsm_state_fn fn, const char *fnname);
 tfsm_fsm_t *tfsm_fsm_fast_table(tfsm_fsm_t *tfsm);
 tfsm_state_t *tfsm_state_find(tfsm_fsm_t *tfsm, const char *name, tfsm_state_type_t flag);
 
-/*
- * State interface
- */
+/* ******************************************************************************* *
+ *                                  fstate functions                               *
+ * ******************************************************************************* */
+
 tfsm_state_t *tfsm_state_new(void);
 void tfsm_state_delete(tfsm_state_t *state);
 void tfsm_state_set_type(tfsm_state_t *state, const char *type);
@@ -73,9 +75,10 @@ void tfsm_state_set_source(tfsm_state_t *tfsm, const char *s, const char *f);
 void tfsm_state_add_transition(tfsm_state_t *tfsm, const char *ret_val, const char *next_state);
 void tfsm_state_print(tfsm_state_t *state);
 
-/*
- * Transition interface
- */
+/* ******************************************************************************* *
+ *                              transition functions                               *
+ * ******************************************************************************* */
+
 tfsm_transition_t *tfsm_trs_new(void);
 
 

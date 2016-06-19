@@ -10,6 +10,7 @@ usage() {
         "Usage:                                          \n"
         "      dcl_fsm_file                              \n"
         "      prefix for enum                           \n"
+        "      out file name                             \n"
     );
 }
 
@@ -69,16 +70,16 @@ write_ret_val_enum(tfsm_fsm_t *tfsm, FILE *enum_out, char *prefix) {
 
 int
 main(int argc, char **argv) {
-    if(argc < 3) {
+    if(argc < 4) {
         usage();
         exit(1);
     }
-    FILE *enum_out = fopen("tfsm_enum_out.h", "w");
+    FILE *enum_out = fopen(argv[3], "w");
     if(enum_out == NULL) {
         printf("Cant create file!\n");
         exit(1);
     }
-    tfsm_fsm_t *tfsm = tfsm_fsm_create_from_file(argv[1]);
+    tfsm_fsm_t *tfsm = tfsm_fsm_create_from_file(argv[1], TFSM_FSM_T_TABLE);
     write_states_enum(tfsm, enum_out, argv[2]);
     fwrite("\n\n", 1, 2, enum_out);
     write_ret_val_enum(tfsm, enum_out, argv[2]);

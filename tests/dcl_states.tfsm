@@ -1,0 +1,55 @@
+def init::is_new_user;
+def fini::AUTOACCEPT;
+def fini::REFUSE;
+def fini::MANUAL;
+
+def node::is_new_user("<inject>", "test_is_new_user"):
+    yes => MANUAL;
+    no => has_photo;
+end
+
+def node::has_photo("<inject>", "test_has_photo"):
+    yes => is_photo_nude;
+    no => has_text_duplicates;
+end
+
+def node::is_photo_nude("<inject>", "test_is_photo_nude"):
+    yes => MANUAL;
+    no => has_photo_duplicates;
+end
+
+def node::has_photo_duplicates("<inject>", "test_photo_duplicate"):
+    yes => REFUSE;
+    no => has_text_duplicates;
+end
+
+def node::has_text_duplicates("<inject>", "test_text_duplicate"):
+    yes => REFUSE;
+    no => is_private_ad;
+end
+
+def node::is_private_ad("<inject>", "test_is_private_ad"):
+    yes => looks_like_company;
+    no => is_from_partner_and_autoaccept;
+end
+
+def node::looks_like_company("<inject>", "test_is_looks_like_company"):
+    yes => MANUAL;
+    no => autoaccept_category;
+end
+
+def node::is_from_partner_and_autoaccept("<inject>", "test_is_from_partner_and_in_autoaccept"):
+    yes => AUTOACCEPT;
+    no => autoaccept_category;
+end
+
+def node::autoaccept_category("<inject>", "test_is_in_autoaccept_category"):
+    yes => AUTOACCEPT;
+    no => user_in_whitelist;
+end
+
+def node::user_in_whitelist("<inject>", "test_is_user_in_whitelist"):
+    yes => AUTOACCEPT;
+    no => MANUAL;
+end
+

@@ -408,16 +408,21 @@ tfsm_scan_dcl_source(mpc_result_t *r, const char *dcl_source_fn) {
     mpc_parser_t *StateMents  = mpc_new("statements");
     mpc_parser_t *Clause      = mpc_new("clause");
     mpc_parser_t *FsmConf     = mpc_new("fsm");
-
-    FILE *grammar = fopen(TFSM_GRAMMAR_SOURCE, "r");
-    if (grammar == NULL) {
-        fprintf(stderr, "No %s found!", TFSM_GRAMMAR_SOURCE);
-        exit(1);
-    }
-
-    mpc_err_t *err = mpca_lang_file(MPCA_LANG_DEFAULT, grammar,
+    
+    mpc_err_t *err = mpca_lang(MPCA_LANG_DEFAULT,
+        "ident       : /[a-zA-Z_][a-zA-Z0-9_]*/ ;                      \n" 
+        "typeident   : (\"init\" | \"fini\" | \"node\") ;                    \n"
+        "strng       : /\"(\\\\.|[^\"])*\"/ ;                          \n"
+        "declaration : \"def\" <typeident> \"::\" <ident> ;                \n"
+        "source      : '(' <strng> ',' <strng> ')' ;                   \n"
+        "statemap    : <ident> \"=>\" <ident> ';' ;                      \n"
+        "statements  : <statemap> (<statemap>)* ;                      \n"
+        "clause      : <declaration> ';'                               \n"
+        "            | <declaration> <source> ':' <statements> \"end\" ; \n"
+        "fsm         : /^/ <clause> (<clause>)* /$/ ;                  \n",
 		Ident, TypeIdent, Strng, Decl, Source, StateMap, StateMents, Clause,
         FsmConf, NULL);
+
 
 	if(err != NULL) {
 		mpc_err_print(err);

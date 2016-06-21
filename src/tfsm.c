@@ -85,11 +85,12 @@ tfsm_fsm_new(void) {
     return tfsm;
 }
 
-// XXX
+/* XXX
 void
 tfsm_fsm_cleanup(tfsm_fsm_t *tfsm) {
     printf("Mock free tfsm");
 }
+*/
 
 // XXX
 void
@@ -152,11 +153,12 @@ tfsm_state_new(void) {
     return state;
 }
 
-// XXX
+/* XXX
 void
 tfsm_state_delete(tfsm_state_t *state) {
     printf("Mock free tfsm_state");
 }
+*/
 
 void
 tfsm_state_set_type(tfsm_state_t *state, const char *type) {

@@ -111,7 +111,7 @@ typedef tfsm_retval *(*tfsm_state_fn)(struct tfsm_fsm_t *tfsm, struct tfsm_ctx_t
 
 tfsm_fsm_t *tfsm_fsm_new(void);
 tfsm_fsm_t *tfsm_fsm_create_from_file(const char *filename, enum tfsm_fsm_type type);
-void tfsm_fsm_cleanup(tfsm_fsm_t *tfsm);
+//void tfsm_fsm_cleanup(tfsm_fsm_t *tfsm);
 void tfsm_fsm_add_state(tfsm_fsm_t *tfsm, tfsm_state_t *state);
 void tfsm_fsm_print(tfsm_fsm_t *tfsm);
 void tfsm_fsm_inject_fn(tfsm_fsm_t *tfsm, tfsm_state_fn fn, const char *fnname);
@@ -122,7 +122,7 @@ tfsm_state_t *tfsm_state_find(tfsm_fsm_t *tfsm, const char *name, enum tfsm_stat
  * ******************************************************************************* */
 
 tfsm_state_t *tfsm_state_new(void);
-void tfsm_state_delete(tfsm_state_t *state);
+//void tfsm_state_delete(tfsm_state_t *state);
 void tfsm_state_set_type(tfsm_state_t *state, const char *type);
 void tfsm_state_set_name(tfsm_state_t *state, const char *name);
 void tfsm_state_set_source(tfsm_state_t *tfsm, const char *s, const char *f);

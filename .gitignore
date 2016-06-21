@@ -1,0 +1,27 @@
+*       # ignore everything
+!/**/     # unignore everything in directory
+!*.*    # unignore all files with extension
+
+# App specific
+bin/
+build/
+
+*.log
+
+# Object files
+*.o
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Debug files
+*.dSYM/

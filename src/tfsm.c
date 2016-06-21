@@ -414,16 +414,16 @@ tfsm_scan_dcl_source(mpc_result_t *r, const char *dcl_source_fn) {
     mpc_parser_t *FsmConf     = mpc_new("fsm");
     
     mpc_err_t *err = mpca_lang(MPCA_LANG_DEFAULT,
-        "ident       : /[a-zA-Z_][a-zA-Z0-9_]*/ ;                      \n" 
+        "ident       : /[a-zA-Z_][a-zA-Z0-9_]*/ ;                            \n" 
         "typeident   : (\"init\" | \"fini\" | \"node\") ;                    \n"
-        "strng       : /\"(\\\\.|[^\"])*\"/ ;                          \n"
-        "declaration : \"def\" <typeident> \"::\" <ident> ;                \n"
-        "source      : '(' <strng> ',' <strng> ')' ;                   \n"
-        "statemap    : <ident> \"=>\" <ident> ';' ;                      \n"
-        "statements  : <statemap> (<statemap>)* ;                      \n"
-        "clause      : <declaration> ';'                               \n"
-        "            | <declaration> <source> ':' <statements> \"end\" ; \n"
-        "fsm         : /^/ <clause> (<clause>)* /$/ ;                  \n",
+        "strng       : /\"(\\\\.|[^\"])*\"/ ;                                \n"
+        "declaration : \"def\" <typeident> \"::\" <ident> ;                  \n"
+        "source      : '(' <strng> ',' <strng> ')' ;                         \n"
+        "statemap    : <ident> \"=>\" <ident> ';' ;                          \n"
+        "statements  : <statemap> (<statemap>)* ;                            \n"
+        "clause      : <declaration> ';'                                     \n"
+        "            | <declaration> <source> ':' <statements> \"end\" ;     \n"
+        "fsm         : /^/ <clause> (<clause>)* /$/ ;                        \n",
 		Ident, TypeIdent, Strng, Decl, Source, StateMap, StateMents, Clause,
         FsmConf, NULL);
 

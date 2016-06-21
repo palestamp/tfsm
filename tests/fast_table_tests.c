@@ -151,6 +151,7 @@ main(void) {
     char buf[PATH_MAX];
     realpath("tests/dcl_states.tfsm", buf);
     tfsm_fsm_t *tfsm = tfsm_fsm_create_from_file(buf, TFSM_FSM_T_TABLE);
+
     tfsm_fsm_inject_fn(tfsm, test_is_new_user, "test_is_new_user");
     tfsm_fsm_inject_fn(tfsm, test_has_photo, "test_has_photo");
     tfsm_fsm_inject_fn(tfsm, test_is_photo_nude, "test_is_photo_nude");

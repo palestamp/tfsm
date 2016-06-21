@@ -281,6 +281,8 @@ tfsm_fsm_create_from_file(const char *dcl_filename, enum tfsm_fsm_type fsm_type)
     char *trans_next_state;
     char *init_state_name;
 
+    int i, j;
+
     tfsm_scan_dcl_source(&r, dcl_filename);
     ast = r.output;
 
@@ -288,7 +290,7 @@ tfsm_fsm_create_from_file(const char *dcl_filename, enum tfsm_fsm_type fsm_type)
     tfsm->source_name = tfsm_strdup(dcl_filename);
 
     // foind all states
-    for(int i = 1; i < ast->children_num; i++) {
+    for(i = 1; i < ast->children_num; i++) {
         _ast = ast->children[i];
         if(strcmp(_ast->tag, "clause|>") == 0) {
             // first node of 'clause' is always 'declaration'  so, check second node
@@ -309,7 +311,7 @@ tfsm_fsm_create_from_file(const char *dcl_filename, enum tfsm_fsm_type fsm_type)
                 tfsm_state_set_source(state, _ast->children[1]->children[1]->contents,
                                              _ast->children[1]->children[3]->contents);
 
-                for(int j = 0; j < _ast->children[3]->children_num; j++) {
+                for(j = 0; j < _ast->children[3]->children_num; j++) {
                     // get all statemaps
                     trans_ret_val = _ast->children[3]->children[j]->children[0]->contents;
                     trans_next_state = _ast->children[3]->children[j]->children[2]->contents;

@@ -56,6 +56,7 @@ typedef struct tfsm_ctx_param_t {
 typedef struct tfsm_ctx_t {
     TAILQ_HEAD(,tfsm_ctx_param_t) params;
     tfsm_retval *runtime_val;
+    void *data;
 } tfsm_ctx_t;
 
 

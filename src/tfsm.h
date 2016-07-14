@@ -53,10 +53,13 @@ typedef struct tfsm_ctx_param_t {
     char *val;
 } tfsm_ctx_param_t;
 
+
+struct tfsm_state_t;
 typedef struct tfsm_ctx_t {
     TAILQ_HEAD(,tfsm_ctx_param_t) params;
     tfsm_retval *runtime_val;
     void *data;
+    struct tfsm_state_t *cur_state;
 } tfsm_ctx_t;
 
 

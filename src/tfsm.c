@@ -259,6 +259,7 @@ tfsm_push(tfsm_fsm_t *tfsm, tfsm_ctx_t *ctx) {
 
     state = tfsm->init_state;
     while(1) {
+        ctx->cur_state = state;
         ret_val = ((tfsm_state_fn)state->fn)(tfsm, ctx);
         state = tfsm_r_next_state(tfsm, state, ret_val);
         if (state == NULL || tfsm_r_final(state)) { break; }
@@ -455,6 +456,7 @@ tfsm_ctx_new(void) {
     ctx = malloc(sizeof(ctx));
     ctx->runtime_val = calloc(1, sizeof(tfsm_retval));
     TAILQ_INIT(&ctx->params);
+    ctx->cur_state = NULL;
     return ctx;
 }
 

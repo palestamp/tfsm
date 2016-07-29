@@ -453,8 +453,8 @@ tfsm_scan_dcl_source(mpc_result_t *r, const char *dcl_source_fn) {
 tfsm_ctx_t *
 tfsm_ctx_new(void) {
     tfsm_ctx_t *ctx;
-    ctx = malloc(sizeof(ctx));
-    ctx->runtime_val = calloc(1, sizeof(tfsm_retval));
+    ctx = malloc(sizeof(struct tfsm_ctx_t));
+    ctx->runtime_val = calloc(1, sizeof(struct tfsm_retval));
     TAILQ_INIT(&ctx->params);
     ctx->cur_state = NULL;
     return ctx;

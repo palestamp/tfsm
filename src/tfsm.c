@@ -62,7 +62,7 @@ void
 tfsm_fsm_print(tfsm_fsm_t *tfsm) {
     tfsm_state_t *state;
     printf("tfsm: %s\n", tfsm->source_name);
-    printf("pending functions: %d", tfsm->pending_fn_num);
+    printf("pending functions: %d\n", tfsm->pending_fn_num);
     TAILQ_FOREACH(state, &tfsm->states, state_list) {
         tfsm_state_print(state);
     }
@@ -252,10 +252,21 @@ tfsm_r_next_state(tfsm_fsm_t *tfsm, tfsm_state_t *state, tfsm_retval *rv) {
     return tfsm->next_state(tfsm, state, rv);
 }
 
+int
+tfsm_r_ready(tfsm_fsm_t *tfsm) {
+    if(tfsm->pending_fn_num != 0)
+        return TFSM_PENDING;
+    return TFSM_OK;
+}
+
 char *
 tfsm_push(tfsm_fsm_t *tfsm, tfsm_ctx_t *ctx) {
     tfsm_state_t *state;
     tfsm_retval *ret_val;
+
+    if(tfsm_r_ready(tfsm) != TFSM_OK) {
+        return NULL;
+    }
 
     state = tfsm->init_state;
     while(1) {
@@ -413,9 +424,9 @@ tfsm_scan_dcl_source(mpc_result_t *r, const char *dcl_source_fn) {
     mpc_parser_t *StateMents  = mpc_new("statements");
     mpc_parser_t *Clause      = mpc_new("clause");
     mpc_parser_t *FsmConf     = mpc_new("fsm");
-    
+
     mpc_err_t *err = mpca_lang(MPCA_LANG_DEFAULT,
-        "ident       : /[a-zA-Z_][a-zA-Z0-9_]*/ ;                            \n" 
+        "ident       : /[a-zA-Z_][a-zA-Z0-9_]*/ ;                            \n"
         "typeident   : (\"init\" | \"fini\" | \"node\") ;                    \n"
         "strng       : /\"(\\\\.|[^\"])*\"/ ;                                \n"
         "declaration : \"def\" <typeident> \"::\" <ident> ;                  \n"

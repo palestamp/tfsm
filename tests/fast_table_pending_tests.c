@@ -10,49 +10,49 @@
 tfsm_retval *
 test_is_new_user(tfsm_fsm_t *tfsm, tfsm_ctx_t *ctx) {
     int new_user = atoi(tfsm_ctx_getstr(ctx, "is_new_user"));
-    int answer = new_user ? R_yes : R_no;
+    int answer = new_user ? R_yes : R_no; 
     return tfsm_r_adopt_int(ctx, answer);
 }
 
 tfsm_retval *
 test_has_photo(tfsm_fsm_t *tfsm, tfsm_ctx_t *ctx) {
     int has_photo = atoi(tfsm_ctx_getstr(ctx, "has_photo"));
-    int answer = has_photo ? R_yes : R_no;
+    int answer = has_photo ? R_yes : R_no; 
     return tfsm_r_adopt_int(ctx, answer);
 }
 
 tfsm_retval *
 test_is_photo_nude(tfsm_fsm_t *tfsm, tfsm_ctx_t *ctx) {
     int is_photo_nude = atoi(tfsm_ctx_getstr(ctx, "is_photo_nude"));
-    int answer = is_photo_nude ? R_yes : R_no;
+    int answer = is_photo_nude ? R_yes : R_no; 
     return tfsm_r_adopt_int(ctx, answer);
 }
 
 tfsm_retval *
 test_photo_duplicate(tfsm_fsm_t *tfsm, tfsm_ctx_t *ctx) {
     int has_photo_duplicates = atoi(tfsm_ctx_getstr(ctx, "has_photo_duplicates"));
-    int answer = has_photo_duplicates ? R_yes : R_no;
+    int answer = has_photo_duplicates ? R_yes : R_no; 
     return tfsm_r_adopt_int(ctx, answer);
 }
 
 tfsm_retval *
 test_text_duplicate(tfsm_fsm_t *tfsm, tfsm_ctx_t *ctx) {
     int has_text_duplicates = atoi(tfsm_ctx_getstr(ctx, "has_text_duplicates"));
-    int answer = has_text_duplicates ? R_yes : R_no;
+    int answer = has_text_duplicates ? R_yes : R_no; 
     return tfsm_r_adopt_int(ctx, answer);
 }
 
 tfsm_retval *
 test_is_private_ad(tfsm_fsm_t *tfsm, tfsm_ctx_t *ctx) {
     int is_private_ad = atoi(tfsm_ctx_getstr(ctx, "is_private_ad"));
-    int answer = is_private_ad ? R_yes : R_no;
+    int answer = is_private_ad ? R_yes : R_no; 
     return tfsm_r_adopt_int(ctx, answer);
 }
 
 tfsm_retval *
 test_is_looks_like_company(tfsm_fsm_t *tfsm, tfsm_ctx_t *ctx) {
     int looks_like_company = atoi(tfsm_ctx_getstr(ctx, "looks_like_company"));
-    int answer = looks_like_company ? R_yes : R_no;
+    int answer = looks_like_company ? R_yes : R_no; 
     return tfsm_r_adopt_int(ctx, answer);
 }
 
@@ -60,7 +60,7 @@ tfsm_retval *
 test_is_from_partner_and_in_autoaccept(tfsm_fsm_t *tfsm, tfsm_ctx_t *ctx) {
     int from_partner = atoi(tfsm_ctx_getstr(ctx, "is_from_partner"));
     int in_autoaccept_list = atoi(tfsm_ctx_getstr(ctx, "in_autoaccept_list"));
-    int answer = (from_partner && in_autoaccept_list) ? R_yes : R_no;
+    int answer = (from_partner && in_autoaccept_list) ? R_yes : R_no; 
     return tfsm_r_adopt_int(ctx, answer);
 }
 
@@ -81,14 +81,14 @@ test_is_in_autoaccept_category(tfsm_fsm_t *tfsm, tfsm_ctx_t *ctx) {
         case 11000:
         case 12000:
         case 13000:
-        default: return tfsm_r_adopt_int(ctx, R_no);
+        default: return tfsm_r_adopt_int(ctx, R_no); 
     }
 }
 
 tfsm_retval *
 test_is_user_in_whitelist(tfsm_fsm_t *tfsm, tfsm_ctx_t *ctx) {
     int in_white_list = atoi(tfsm_ctx_getstr(ctx, "user_in_whitelist"));
-    int answer = in_white_list ? R_yes : R_no;
+    int answer = in_white_list ? R_yes : R_no; 
     return tfsm_r_adopt_int(ctx, answer);
 }
 
@@ -111,7 +111,7 @@ main(void) {
     tfsm_ctx_set(ctx0, "in_autoaccept_list", "1");
     tfsm_ctx_set(ctx0, "category", "13000");
     tfsm_ctx_set(ctx0, "user_in_whitelist", "1");
-
+    
     tfsm_ctx_set(ctx1, "is_new_user", "0");
     tfsm_ctx_set(ctx1, "has_photo", "0");
     tfsm_ctx_set(ctx1, "is_photo_nude", "0");
@@ -123,7 +123,7 @@ main(void) {
     tfsm_ctx_set(ctx1, "in_autoaccept_list", "1");
     tfsm_ctx_set(ctx1, "category", "13000");
     tfsm_ctx_set(ctx1, "user_in_whitelist", "1");
-
+    
     tfsm_ctx_set(ctx2, "is_new_user", "0");
     tfsm_ctx_set(ctx2, "has_photo", "1");
     tfsm_ctx_set(ctx2, "is_photo_nude", "0");
@@ -161,13 +161,13 @@ main(void) {
     tfsm_fsm_inject_fn(tfsm, test_is_looks_like_company, "test_is_looks_like_company");
     tfsm_fsm_inject_fn(tfsm, test_is_from_partner_and_in_autoaccept, "test_is_from_partner_and_in_autoaccept");
     tfsm_fsm_inject_fn(tfsm, test_is_in_autoaccept_category, "test_is_in_autoaccept_category");
-    tfsm_fsm_inject_fn(tfsm, test_is_user_in_whitelist, "test_is_user_in_whitelist");
-
-    check(strcmp(tfsm_push(tfsm, ctx0), "MANUAL") == 0, "Failed on first push");
-    check(strcmp(tfsm_push(tfsm, ctx1), "REFUSE") == 0, "Failed on second push");
-    check(strcmp(tfsm_push(tfsm, ctx2), "AUTOACCEPT") == 0, "Failed on third push");
-    check(strcmp(tfsm_push(tfsm, ctx3), "MANUAL") == 0, "Failed on fourth push");
-    tfsm_fsm_print(tfsm);
+//    tfsm_fsm_inject_fn(tfsm, test_is_user_in_whitelist, "test_is_user_in_whitelist");
+    
+    check(tfsm_push(tfsm, ctx0) == NULL, "Failed on first push");
+    check(tfsm_push(tfsm, ctx1) == NULL, "Failed on second push");
+    check(tfsm_push(tfsm, ctx2) == NULL, "Failed on third push");
+    check(tfsm_push(tfsm, ctx3) == NULL, "Failed on fourth push");
+    check(tfsm_r_ready(tfsm) == TFSM_PENDING, "Failed, tfsm not ready");  
 
     return 0;
 error:

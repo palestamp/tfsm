@@ -1,0 +1,50 @@
+tfsm: /Users/staskazhavets/self/tfsm/tests/dcl_states.tfsm
+pending functions: 0
+init::is_new_user
+
+fini::AUTOACCEPT
+
+fini::REFUSE
+
+fini::MANUAL
+
+node::is_new_user
+    is_new_user, yes => MANUAL
+    is_new_user, no => has_photo
+
+node::has_photo
+    has_photo, yes => is_photo_nude
+    has_photo, no => has_text_duplicates
+
+node::is_photo_nude
+    is_photo_nude, yes => MANUAL
+    is_photo_nude, no => has_photo_duplicates
+
+node::has_photo_duplicates
+    has_photo_duplicates, yes => REFUSE
+    has_photo_duplicates, no => has_text_duplicates
+
+node::has_text_duplicates
+    has_text_duplicates, yes => REFUSE
+    has_text_duplicates, no => is_private_ad
+
+node::is_private_ad
+    is_private_ad, yes => looks_like_company
+    is_private_ad, no => is_from_partner_and_autoaccept
+
+node::looks_like_company
+    looks_like_company, yes => MANUAL
+    looks_like_company, no => autoaccept_category
+
+node::is_from_partner_and_autoaccept
+    is_from_partner_and_autoaccept, yes => AUTOACCEPT
+    is_from_partner_and_autoaccept, no => autoaccept_category
+
+node::autoaccept_category
+    autoaccept_category, yes => AUTOACCEPT
+    autoaccept_category, no => user_in_whitelist
+
+node::user_in_whitelist
+    user_in_whitelist, yes => AUTOACCEPT
+    user_in_whitelist, no => MANUAL
+

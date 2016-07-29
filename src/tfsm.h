@@ -17,7 +17,12 @@
 #define TFSM_MAX_RETVAL_NUM (1024)
 #endif
 
-enum tfsm_retval_t {
+enum tfsm_status {
+    TFSM_OK,
+    TFSM_PENDING,
+};
+
+enum tfsm_ret_type {
     INT,
     STR,
 };
@@ -39,7 +44,7 @@ enum tfsm_fsm_type {
 };
 
 typedef struct tfsm_retval {
-    enum tfsm_retval_t ret_val_type;
+    enum tfsm_ret_type ret_val_type;
     union {
         int i;
         char *s;
@@ -147,4 +152,5 @@ char *tfsm_ctx_getstr(tfsm_ctx_t *ctx, const char *key);
 tfsm_ctx_t *tfsm_ctx_new(void);
 tfsm_retval *tfsm_r_adopt_int(tfsm_ctx_t *ctx, int retval);
 tfsm_state_t *tfsm_r_find_pairing(tfsm_fsm_t *tfsm, tfsm_state_t *state, char *ret_val);
+int tfsm_r_ready(tfsm_fsm_t *tfsm);
 #endif

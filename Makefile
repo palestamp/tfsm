@@ -13,7 +13,7 @@ TFSM_DEF_HEADERS=$(patsubst %.tfsm,%.h,$(TFSM_DEF))
 TARGET=build/libtfsm.a
 SO_TARGET=$(patsubst %.a,%.so,$(TARGET))
 
-all: $(TARGET) $(SO_TARGET) tests
+all: $(TARGET) $(SO_TARGET) check
 
 dev: CFLAGS=-g -Wall -Isrc -Wall -Wextra $(OPTFLAGS)
 dev: all
@@ -36,14 +36,15 @@ enum_gen: build $(OBJECTS)
 gen_headers: enum_gen
 	./bin/enum_gen $(TFSM_DEF) R $(TFSM_DEF_HEADERS)
 
-
-tests: CFLAGS += $(TARGET)
-tests: gen_headers $(TESTS)
+check: CFLAGS += $(TARGET)
+check: gen_headers $(TESTS)
 	sh ./tests/runtests.sh
 
 clean:
 	rm -rf build $(OBJECTS) $(TESTS)
 	rm -f tests/tests.log
+	rm -f tests/*.diff
 	rm -f tests/*.h
 	rm -rf `find . -name "*.dSYM" -print`
 	rm -f bin/enum_gen
+

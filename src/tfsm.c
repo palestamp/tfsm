@@ -72,12 +72,13 @@ tfsm_fsm_print(tfsm_fsm_t *tfsm) {
  *                                  fsm functions                                  *
  * ******************************************************************************* */
 
-// XXX
 tfsm_fsm_t *
 tfsm_fsm_new(void) {
     tfsm_fsm_t *tfsm;
     tfsm = malloc(sizeof(tfsm_fsm_t));
     tfsm->known_ret_vals = calloc(TFSM_MAX_RETVAL_NUM, sizeof(char *));
+    // XXX FREE free(tfsm->known_ret_vals);
+    // XXX FREE free(tfsm);
     tfsm->pending_fn_num = 0;
     tfsm->states_num = 0;
     tfsm->ret_val_num = 0;
@@ -114,7 +115,6 @@ tfsm_fsm_inject_fn(tfsm_fsm_t *tfsm, tfsm_state_fn fn, const char *fnname) {
                 (strcmp(state->function_name, fnname) == 0))) {
                 state->fn = (void *)fn;
                 tfsm->pending_fn_num--;
-                break;
             }
         }
         if (memo_pending == tfsm->pending_fn_num) {
@@ -143,22 +143,16 @@ tfsm_fsm_add_uniq_ret_val(tfsm_fsm_t *tfsm,  char *ret_val) {
  *                                   state functions                               *
  * ******************************************************************************* */
 
-// XXX
 tfsm_state_t *
 tfsm_state_new(void) {
     tfsm_state_t *state;
     state = malloc(sizeof(tfsm_state_t));
+    // XXX FREE free(state);
     state->transition_num = 0;
     TAILQ_INIT(&state->transitions);
     return state;
 }
 
-/* XXX
-void
-tfsm_state_delete(tfsm_state_t *state) {
-    printf("Mock free tfsm_state");
-}
-*/
 
 void
 tfsm_state_set_type(tfsm_state_t *state, const char *type) {
@@ -176,10 +170,10 @@ tfsm_state_set_type(tfsm_state_t *state, const char *type) {
     state->type = st_type;
 }
 
-// XXX
 void
 tfsm_state_set_name(tfsm_state_t *state, const char *name) {
     state->name = tfsm_strdup(name);
+    // XXX FREE free(state->name);
 }
 
 // XXX
@@ -189,13 +183,16 @@ tfsm_state_set_source(tfsm_state_t *state, const char *s, const char *fn) {
     state->function_name = strip_se(fn);
 }
 
-// XXX
 void
 tfsm_state_add_transition(tfsm_state_t *state, const char *s, const char *f) {
     tfsm_transition_t *trs = tfsm_trs_new();
     trs->from_state = tfsm_strdup(state->name);
     trs->ret_val = tfsm_strdup(s);
     trs->to_state = tfsm_strdup(f);
+    // XXX FREE free(trs->from_state);
+    // XXX FREE free(trs->state->name);
+    // XXX FREE free(trs->state->name);
+    // XXX FREE free(trs);
     state->transition_num++;
     TAILQ_INSERT_TAIL(&state->transitions, trs, trs);
 }
@@ -215,7 +212,6 @@ tfsm_state_find(tfsm_fsm_t *tfsm, const char *name, enum tfsm_state_type flag){
  *                               transition functions                              *
  * ******************************************************************************* */
 
-// XXX
 tfsm_transition_t *
 tfsm_trs_new(void) {
     return malloc(sizeof(tfsm_transition_t));
@@ -300,6 +296,8 @@ tfsm_fsm_create_from_file(const char *dcl_filename, enum tfsm_fsm_type fsm_type)
 
     tfsm = tfsm_fsm_new();
     tfsm->source_name = tfsm_strdup(dcl_filename);
+    
+    // XXX FREE free(tfsm->source_name);
 
     // foind all states
     for(i = 1; i < ast->children_num; i++) {
@@ -347,11 +345,10 @@ tfsm_fsm_create_from_file(const char *dcl_filename, enum tfsm_fsm_type fsm_type)
     // create lookup object
     switch (fsm_type) {
         case TFSM_FSM_T_TABLE:
-            tfsm_fsm_set_table_lookup(tfsm);
-            break;
         case TFSM_FSM_T_LIST:
         case TFSM_FSM_T_NORMAL:
-            break;
+        default: 
+            tfsm_fsm_set_table_lookup(tfsm);
     }
     return tfsm;
 }

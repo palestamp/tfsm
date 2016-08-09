@@ -103,8 +103,9 @@ tfsm_fsm_add_state(tfsm_fsm_t *tfsm, tfsm_state_t *state) {
     }
 }
 
+
 void
-tfsm_fsm_inject_fn(tfsm_fsm_t *tfsm, tfsm_state_fn fn, const char *fnname) {
+tfsm_fsm_inject_fn(tfsm_fsm_t *tfsm, tfsm_state_fn fn, const char *fnname, inject_cb f_cb, void *data) {
     tfsm_state_t *state;
     int memo_pending = tfsm->pending_fn_num;
 
@@ -115,6 +116,9 @@ tfsm_fsm_inject_fn(tfsm_fsm_t *tfsm, tfsm_state_fn fn, const char *fnname) {
                 (strcmp(state->function_name, fnname) == 0))) {
                 state->fn = (void *)fn;
                 tfsm->pending_fn_num--;
+                if(f_cb != NULL) {
+                    f_cb(state, data);
+                }
             }
         }
         if (memo_pending == tfsm->pending_fn_num) {

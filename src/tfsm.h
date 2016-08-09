@@ -123,7 +123,9 @@ tfsm_fsm_t *tfsm_fsm_create_from_file(const char *filename, enum tfsm_fsm_type t
 //void tfsm_fsm_cleanup(tfsm_fsm_t *tfsm);
 void tfsm_fsm_add_state(tfsm_fsm_t *tfsm, tfsm_state_t *state);
 void tfsm_fsm_print(tfsm_fsm_t *tfsm);
-void tfsm_fsm_inject_fn(tfsm_fsm_t *tfsm, tfsm_state_fn fn, const char *fnname);
+
+typedef void (*inject_cb)(tfsm_state_t *state, void *data);
+void tfsm_fsm_inject_fn(tfsm_fsm_t *tfsm, tfsm_state_fn fn, const char *fnname, inject_cb f_cb, void *data);
 tfsm_state_t *tfsm_state_find(tfsm_fsm_t *tfsm, const char *name, enum tfsm_state_type flag);
 
 /* ******************************************************************************* *

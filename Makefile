@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-O2 -Wall -Wextra -Isrc -DNDEBUG $(OPTFLAGS)
+CFLAGS=-O2 -Wall -Wextra -Isrc $(OPTFLAGS)
 
 SOURCES=$(wildcard src/**/*.c src/*.c)
 OBJECTS=$(patsubst %.c,%.o,$(SOURCES))
@@ -31,7 +31,7 @@ build:
 	@mkdir -p bin
 
 enum_gen: build $(OBJECTS)
-	$(CC) -o bin/enum_gen $(OBJECTS)
+	$(CC) $(CFLAGS) -o bin/enum_gen $(OBJECTS)
 
 gen_headers: enum_gen
 	./bin/enum_gen $(TFSM_DEF) R $(TFSM_DEF_HEADERS)

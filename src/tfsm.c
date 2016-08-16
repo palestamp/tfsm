@@ -122,7 +122,7 @@ tfsm_fsm_inject_fn(tfsm_fsm_t *tfsm, tfsm_state_fn fn, const char *fnname, injec
             }
         }
         if (memo_pending == tfsm->pending_fn_num) {
-            fprintf(stderr, "No state waiting for '%s' function. Skipping.", fnname);
+            fprintf(stderr, "No state waiting for '%s' function. Skipping.\n", fnname);
         }
     } else {
         fprintf(stderr, "No free slot for  '%s' function. Skipping.\n", fnname);
